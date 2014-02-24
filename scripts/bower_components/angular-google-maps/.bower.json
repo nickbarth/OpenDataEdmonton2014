@@ -1,0 +1,24 @@
+{
+  "name": "angular-google-maps",
+  "version": "1.0.13",
+  "main": "./dist/angular-google-maps.js",
+  "dependencies": {
+    "angular": "1.2.x",
+    "underscore": "~1.5.x"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.x",
+    "jquery": "2.1.x"
+  },
+  "homepage": "https://github.com/nlaplante/angular-google-maps",
+  "_release": "1.0.13",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.13",
+    "commit": "e9803f5af4b424c0b36582bc50048abe3fffd638"
+  },
+  "_source": "git://github.com/nlaplante/angular-google-maps.git",
+  "_target": "~1.0.13",
+  "_originalSource": "angular-google-maps",
+  "_direct": true
+}

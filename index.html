@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="App">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>App</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/scripts/bower_components/ngprogress/ngProgress.css" rel="stylesheet">
+    <link href="/styles/animate.min.css" rel="stylesheet">
+    <link href="/styles/application.css" rel="stylesheet">
+  </head>
+
+  <body ng-controller="MainCtrl">
+    <div class="container">
+      <div class="header">
+
+
+        <ul class="nav nav-pills pull-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle btn btn-default">
+              Infractions: {{selectedType}} <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="type in infractionTypes">
+                <a ng-click="setSelected(type)">{{type}}</a>
+              </li>
+            </ul>
+            <li>
+
+              <a class="btn btn-primary map" ng-click="backToMain()" ng-hide="viewMap" ng-class="{'animated fadeIn': !viewMap, 'animated fadeOut': viewMap}">
+                Back
+              </a>
+            </li>
+          </li>
+        </ul>
+        <h3 class="text-muted"><i class="fa fa-building-o"></i> {Edmonton} Bylaw Infractions</h3>
+        <hr>
+      </div>
+
+      <div class="maps-container">
+        <angular-google-map id="google-map" class="google-map" refresh="map.refresh" center="map.center" zoom="map.zoom" draggable="true" pan="true" options="map.options" ng-show="viewMap" ng-class="{'animated fadeIn': viewMap, 'animated fadeOut': !viewMap}" control="map.control">
+          <markers models="markers" icon="'icon'" coords="'self'" click="'onclick'"></markers>
+        </angular-google-map>
+        <google-street-view id="street-view" ng-hide="viewMap" ng-class="{'animated fadeIn': !viewMap, 'animated fadeOut': viewMap}"></google-street-view>
+      </div>
+      <hr>
+      <p class="text-muted small">By Nick Barth for Data Day</p>
+    </div>
+    <script src="/scripts/bower_components/angular/angular.js"></script>
+    <script src="/scripts/bower_components/angular-route/angular-route.js"></script>
+    <script src="/scripts/bower_components/angular-facebook/lib/angular-facebook.js"></script>
+    <script src="/scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/scripts/bower_components/ngprogress/build/ngProgress.js"></script>
+    <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+    <script src="/scripts/bower_components/underscore/underscore.js"></script>
+    <script src="/scripts/bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="/scripts/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/scripts/main.js"></script>
+  </body>
+</html>
