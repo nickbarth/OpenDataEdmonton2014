@@ -2,6 +2,19 @@ body {
   background: #fff;
 }
 
+.clear {
+  clear: both;
+}
+
+.header {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.bylaw-selector {
+  margin: 10px 0;
+}
+
 .maps-container {
   overflow: hidden;
 }
@@ -15,4 +28,39 @@ body {
 #street-view {
   width: 100%;
   height: 400px;
+}
+
+.gray {
+  background: #eee;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.title {
+  color: #555;
+}
+
+@media (max-width: 480px) {
+  .application-title {
+    display: block;
+    width: 100%;
+  }
+
+  .bylaw-selector {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .dropdown {
+    width: 78%;
+    float: left;
+  }
+
+  .map-btn {
+    width: 20%;
+    float: right;
+  }
 }

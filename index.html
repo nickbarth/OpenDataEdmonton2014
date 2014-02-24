@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     <title>App</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -17,27 +17,31 @@
     <div class="container">
       <div class="header">
 
-
-        <ul class="nav nav-pills pull-right">
+        <h3 class="application-title pull-left" class="text-muted"><i class="fa fa-building-o"></i> <span class="title">{Edmonton}</span> <span class="hidden-xs">Bylaw</span> Infractions</h3>
+        <ul class="nav nav-pills pull-right bylaw-selector">
           <li class="dropdown">
             <a class="dropdown-toggle btn btn-default">
               Infractions: {{selectedType}} <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu">
               <li ng-repeat="type in infractionTypes">
-                <a ng-click="setSelected(type)">{{type}}</a>
+                <a class="clickable" ng-click="setSelected(type)">{{type}}</a>
               </li>
             </ul>
-            <li>
-
-              <a class="btn btn-primary map" ng-click="backToMain()" ng-hide="viewMap" ng-class="{'animated fadeIn': !viewMap, 'animated fadeOut': viewMap}">
+            <li class="map-btn">
+              <a class="btn btn-default" ng-show="viewMap" ng-class="{'gray': !viewHeatmap}" ng-click="showHeatmap()" ng-model="viewHeatmap" btn-checkbox btn-checkbox-true="false" btn-checkbox-false="true">
+                <i class="fa fa-map-marker"></i>
+              </a>
+            </li>
+            <li class="map-btn">
+              <a class="btn btn-primary" ng-click="backToMain()" ng-hide="viewMap" ng-class="{'animated fadeIn': !viewMap, 'animated fadeOut': viewMap}">
                 Back
               </a>
             </li>
           </li>
         </ul>
-        <h3 class="text-muted"><i class="fa fa-building-o"></i> {Edmonton} Bylaw Infractions</h3>
-        <hr>
+
+        <div class="clear"></div>
       </div>
 
       <div class="maps-container">
@@ -47,14 +51,14 @@
         <google-street-view id="street-view" ng-hide="viewMap" ng-class="{'animated fadeIn': !viewMap, 'animated fadeOut': viewMap}"></google-street-view>
       </div>
       <hr>
-      <p class="text-muted small">By Nick Barth for Data Day</p>
+      <p class="text-muted small">By Nick Barth for <a href="http://opendataday.org/">International Open Data Day</a></p>
     </div>
     <script src="/scripts/bower_components/angular/angular.js"></script>
     <script src="/scripts/bower_components/angular-route/angular-route.js"></script>
     <script src="/scripts/bower_components/angular-facebook/lib/angular-facebook.js"></script>
     <script src="/scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="/scripts/bower_components/ngprogress/build/ngProgress.js"></script>
-    <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+    <script src='//maps.googleapis.com/maps/api/js?libraries=visualization&sensor=false'></script>
     <script src="/scripts/bower_components/underscore/underscore.js"></script>
     <script src="/scripts/bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
     <script src="/scripts/bower_components/angular-animate/angular-animate.js"></script>

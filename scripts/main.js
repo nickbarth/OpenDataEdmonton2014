@@ -4,6 +4,10 @@
 
   angular.module('App', ['ngRoute', 'ui.bootstrap', 'ngProgress', 'google-maps', 'ngAnimate'])
 
+  .run(['ngProgress', function (ngProgress) {
+    ngProgress.color("#0088cc");
+  }])
+
   .directive('googleStreetView', function () {
     return {
       replace: true,
@@ -42,10 +46,15 @@
     }
   }])
 
-  .controller('MainCtrl', ['$scope', 'BylawInfractions', function ($scope, BylawInfractions) {
+  .controller('MainCtrl', ['$scope', 'ngProgress', 'BylawInfractions', function ($scope, ngProgress, BylawInfractions) {
     function setInfractionType () {
+      ngProgress.set(0);
+      ngProgress.reset();
+      ngProgress.start();
+
       BylawInfractions.get().then(function (infractions) {
         var infractionTypes = {};
+        $scope.dataPoints = [];
 
         infractions = infractions
         .filter(function (infraction) {
@@ -56,30 +65,34 @@
           var marker = infraction.location
 
           delete marker.needs_recoding;
-          marker.icon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+          marker.icon = "http://maps.google.com/mapfiles/ms/icons/blue.png";
 
           marker.onclick = function () {
             $scope.markers.map(function (marker) {
-              marker.icon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+              marker.icon = "http://maps.google.com/mapfiles/ms/icons/blue.png";
             });
 
-            marker.icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+            marker.icon = "http://maps.google.com/mapfiles/ms/icons/police.png";
 
             $scope.$apply(function () { $scope.viewMap = false });
             $scope.streetView.setPosition(new google.maps.LatLng(marker.latitude, marker.longitude))
-            setTimeout(function () { google.maps.event.trigger($scope.streetView, 'resize') }, 50);
+            setTimeout(function () { google.maps.event.trigger($scope.streetView, 'resize') }, 200);
           }
 
+          $scope.dataPoints.push(new google.maps.LatLng(marker.latitude, marker.longitude));
           return marker;
         })
 
+        $scope.heatmap.setData($scope.dataPoints);
         $scope.markers = infractions;
         $scope.infractionTypes = Object.keys(infractionTypes);
+        ngProgress.complete();
       });
     }
 
     $scope.viewMap = true;
     $scope.markers = [];
+    $scope.dataPoints = [];
 
     $scope.map = {
       control: {},
@@ -98,11 +111,14 @@
     $scope.infractionTypes = [];
     $scope.selectedType = 'Graffiti';
     $scope.viewMap = true;
+    $scope.viewHeatmap = false;
 
     $scope.setSelected = function (type) {
       if ($scope.selectedType !== type) {
         $scope.selectedType = type;
         $scope.viewMap = true;
+        $scope.heatmap.setMap(null);
+        $scope.viewHeatmap = false;
         setInfractionType();
       }
     }
@@ -111,9 +127,28 @@
       $scope.viewMap = true;
       setTimeout(function () {
         $scope.map.control.refresh();
-      }, 50);
+      }, 200);
     }
 
+    $scope.showHeatmap = function () {
+      ngProgress.set(0);
+      ngProgress.reset();
+      ngProgress.start();
+      if (!$scope.viewHeatmap) {
+        $scope.heatmap.setMap($scope.map.control.getGMap());
+        $scope.markers.map(function (marker) {
+          marker.icon = ' ';
+        })
+      } else {
+        $scope.heatmap.setMap(null);
+        $scope.markers.map(function (marker) {
+          marker.icon = "http://maps.google.com/mapfiles/ms/icons/blue.png";
+        });
+      }
+      ngProgress.complete();
+    }
+
+    $scope.heatmap = new google.maps.visualization.HeatmapLayer({ data: [] });
     setInfractionType();
   }])
 }(angular));
